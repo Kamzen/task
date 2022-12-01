@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
@@ -19,10 +20,12 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useDispatch, useSelector } from "react-redux";
 import { addTeamToLeague, editTeam, getLeagueTeams } from "../state/League";
 import AlertPopup from "./AlertPopup";
+import dayjs from 'dayjs'
 
 const EditableDataGrid = () => {
   const [data, setData] = useState({});
   const [teamData, setTeamData] = useState({});
+  // const [lastUpdated,setLastUpdated] = useState()
 
   const [showEditForm, setShowEditForm] = useState(false);
   const [showAddTeamForm, setShowAddTeamForm] = useState(false);
@@ -79,6 +82,16 @@ const EditableDataGrid = () => {
       [e.target.name]: parseInt(e.target.value),
     }));
   }
+
+  let arrDates = []
+
+  rows?.forEach((row) => {
+    arrDates.push(row.updated_at)
+  })
+
+  arrDates = arrDates.sort((a,b) => b - a);
+
+  console.log(arrDates)
 
   useEffect(() => {
     dispatch(getLeagueTeams());
@@ -286,6 +299,13 @@ const EditableDataGrid = () => {
           </Table>
         </TableContainer>
       </Paper>
+      <br />
+      <br />
+      <Typography>
+        {
+          arrDates[0]
+        }
+      </Typography>
     </Box>
   );
 };
